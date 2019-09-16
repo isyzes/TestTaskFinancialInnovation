@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>TODO Application!</title>
+</head>
+<body>
+<div class="container">
+    <div class="jumbotron">
+        <h1 class="display-4" th:text="'Список задач пользователя: ' + ${user.fullName}+ ' (' + ${countTask} +')'"></h1>
+        <hr class="my-4">
+        <p>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+                    aria-expanded="false" aria-controls="collapseExample">
+                Добавить задачу!
+            </button>
+        </p>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                <form th:action="'/addNewTask/' + ${user.id}" method="post">
+                    <div class="form-row">
+                        <div class="col-7">
+                            <input type="text" class="form-control" placeholder="Название задачи" name="taskName">
+                        </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary mb-2">Добавать</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Название задачи</th>
+            <th scope="col">Состояние</th>
+            <th scope="col">Инфо</th>
+        </tr>
+        </thead>
+
+        <tbody th:each="task : ${tasks}">
+        <tr>
+            <th scope="row" th:text="${task.name}"></th>
+            <td th:if="${task.state}">Выполнена</td>
+            <td width="150" th:if="${!task.state}">Не выполнена</td>
+
+            <td width="700">
+                <p>
+                    <a data-toggle="collapse" th:href="'#multiCollapseExample' + ${task.id}" role="button"
+                       aria-expanded="false" aria-controls="multiCollapseExample1">
+                        <img src="https://img.icons8.com/metro/26/000000/info.png"></a>
+                </p>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="collapse multi-collapse" th:id="multiCollapseExample + ${task.id}">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th width="100" scope="col">Время выполнения</th>
+                                    <th scope="col">Коментарий</th>
+                                </tr>
+                                </thead>
+
+                                <tbody th:each="log : ${logs}">
+                                <tr th:if="${log.task.id} == ${task.id}">
+
+                                    <td scope="row" th:text="${log.spentTime}"></td>
+                                    <td scope="row" th:text="${log.comment}"></td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                            <p>
+                                <a data-toggle="collapse" th:href="'#collapseExampleTask' + ${task.id}" role="button"
+                                   aria-expanded="false" aria-controls="multiCollapseExample1">
+                                    <img src="https://img.icons8.com/metro/26/000000/plus.png"></a>
+                            </p>
+
+                            <div class="collapse" th:id="'collapseExampleTask' + ${task.id}">
+                                <div class="card card-body">
+                                    <form th:action="'/addLogsTask/' + ${task.id}" method="post">
+                                        <div class="form-row">
+                                            <div class="col-12">
+                                                <input type="text" class="form-control" placeholder="Комментарий"
+                                                       name="comment">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <button type="submit" class="btn btn-primary mb-2">Добавать</button>
+                                    </form>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

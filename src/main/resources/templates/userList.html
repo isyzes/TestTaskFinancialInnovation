@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>TODO Application!</title>
+</head>
+<body>
+<div class="container">
+    <div class="jumbotron">
+        <h1 class="display-4" th:text="'Список пользователей (' + ${countUsers} +')'"></h1>
+        <hr class="my-4">
+        <p>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+                    aria-expanded="false" aria-controls="collapseExample">
+                Добавить нового пользователя!
+            </button>
+        </p>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                <form action="/addNewUser" method="post">
+                    <div class="form-row">
+                        <div class="col-7">
+                            <input type="text" class="form-control" placeholder="Фамилия Имя Отчество" name="fullName">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Логин" name="login">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Пароль" name="password">
+                        </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary mb-2">Добавать</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th width="50" scope="col">Id</th>
+            <th scope="col">ФИО</th>
+            <th scope="col">Логин</th>
+            <th scope="col">Пароль</th>
+            <th width="50" scope="col"></th>
+            <th width="500" scope="col"></th>
+        </tr>
+        </thead>
+
+        <tbody th:each="user : ${people}">
+        <tr>
+            <th scope="row" th:text="${user.id}"/>
+            <td th:text="${user.fullName}"/>
+            <td th:text="${user.login}"/>
+            <td th:text="${user.password}"/>
+            <td><a th:href="'/getUserTaskList/'+${user.id}"><img src="https://img.icons8.com/metro/26/000000/list.png"></a>
+            </td>
+            <td>
+                <p>
+                    <a data-toggle="collapse" th:href="'#multiCollapseExample' + ${user.id}" role="button" aria-expanded="false"
+                       aria-controls="multiCollapseExample1"><img src="https://img.icons8.com/metro/26/000000/edit.png"></a>
+                </p>
+
+                <div class="collapse multi-collapse" th:id="'multiCollapseExample' + ${user.id}">
+                    <div class="card card-body">
+                        <form th:action="'/userEdit/' + ${user.id}" method="post">
+                            <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Фамилия Имя Отчество" name="fullName" th:value="${user.fullName}">
+                            <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Логин" name="login" th:value="${user.login}">
+                            <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Пароль" name="password" th:value="${user.password}">
+                            <button type="submit" class="btn btn-primary mb-2">Изменить</button>
+                        </form>
+                    </div>
+                </div>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>
