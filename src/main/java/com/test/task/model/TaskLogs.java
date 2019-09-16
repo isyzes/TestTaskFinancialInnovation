@@ -4,13 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 @Entity
 @Getter
 @Setter
-@Table(name ="task_logs")
+@Table(name = "task_logs")
 public class TaskLogs {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,7 +19,7 @@ public class TaskLogs {
     private Task task;
 
     @Column(name = "spent_time")
-    private long spentTime;//потраченное время (целое число часов)
+    private double spentTime;
 
     @Column(name = "comment", length = 1000)
     private String comment;
@@ -32,5 +30,9 @@ public class TaskLogs {
     }
 
     public TaskLogs() {
+    }
+
+    public double getSpentTime() {
+        return (double) Math.round(spentTime * 100) / 100;
     }
 }

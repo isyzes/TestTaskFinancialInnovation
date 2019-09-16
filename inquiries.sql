@@ -14,6 +14,6 @@ JOIN task_logs ON task.id = task_logs.task_id
 GROUP BY USER.id HAVING SUM(task_logs.spent_time) > 100;
 
 CREATE EVENT spent_time
-    ON SCHEDULE every 1 minute
+    ON SCHEDULE every 1 SECOND
     DO
-		UPDATE task_logs SET spent_time = spent_time + 1 where task_id in (select id from task where state = false);
+		UPDATE task_logs SET spent_time = spent_time + 0.0003125 WHERE task_id IN (SELECT id FROM task WHERE state = false);
